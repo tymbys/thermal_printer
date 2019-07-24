@@ -3,12 +3,15 @@
 #include "adalogo.h"
 #include "adaqrcode.h"
 
+#include "fb.h"
+
+fb &_fb = fb::GetInstance();
 
 int main() {
     Thermal printer("/dev/ttyUSB0");
 
-    printer.begin(20);
-
+    printer.begin(50);
+/*
     // Test character double-height on & off
     printer.doubleHeightOn();
     printer.println("Double Height ON");
@@ -64,6 +67,27 @@ int main() {
     sleep(3);         // Sleep for 3 seconds
     printer.wake();       // MUST wake() before printing again, even if reset
     printer.setDefault(); // Restore printer to defaults
+    */
+
+std::cout << "CACHSIZE: " << _fb.CACHSIZE << std::endl;
+
+    _fb.OLED_DrawLine_fast(0,0,50,50,1);
+    _fb.OLED_DrawLine_fast(50,0,0,50,1);
+    _fb.OLED_DrawLine_fast(0,0,0,50,1);
+    _fb.OLED_DrawLine_fast(0,0,50,0,1);
+    _fb.OLED_DrawLine_fast(0,50,50,50,1);
+    _fb.OLED_DrawLine_fast(50,0,50,50,1);
+
+//    for(int x=0; x<128/8; x++) {
+//        _fb.FBCache[x] = 0xff;
+//    }
+
+    printer.printBitmap(128, 64, _fb.FBCache);
+//    printer.println("Test!!!");
+//    printer.feed(2);
+
+
+
 
 
     std::cout << "Hello, World!" << std::endl;

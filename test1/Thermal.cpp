@@ -32,6 +32,7 @@
 // be unnecessary, but erring on side of caution here.
 #define BYTE_TIME (((11L * 1000000L) + (BAUDRATE / 2)) / BAUDRATE)
 
+
 // Constructor
 Thermal::Thermal(std::string tty_str, uint8_t dtr){
 
@@ -80,7 +81,7 @@ Thermal::Thermal(std::string tty_str, uint8_t dtr){
 }
 
 // This method sets the estimated completion time for a just-issued task.
-void Thermal::timeoutSet(unsigned long x) {
+void Thermal::timeoutSet(uint64_t x) {
   if(!dtrEnabled) resumeTime = micros() + x;
 }
 
@@ -104,7 +105,7 @@ void Thermal::timeoutWait() {
 // but as stated above your reality may be influenced by many factors.
 // This lets you tweak the timing to avoid excessive delays and/or
 // overrunning the printer buffer.
-void Thermal::setTimes(unsigned long p, unsigned long f) {
+void Thermal::setTimes(uint64_t p, uint64_t f) {
   dotPrintTime = p;
   dotFeedTime  = f;
 }
@@ -150,7 +151,7 @@ size_t Thermal::write_(uint8_t c) {
   if(c != 0x13) { // Strip carriage returns
     timeoutWait();
     write(ttyUsb, &c, 1);
-    unsigned long d = BYTE_TIME;
+    uint64_t d = BYTE_TIME;
     if((c == '\n') || (column == maxColumn)) { // If newline or wrap
       d += (prevByte == '\n') ?
         ((charHeight+lineSpacing) * dotFeedTime) :             // Feed line
@@ -172,7 +173,8 @@ void Thermal::begin(uint8_t heatTime) {
   // The printer can't start receiving data immediately upon power up --
   // it needs a moment to cold boot and initialize.  Allow at least 1/2
   // sec of uptime before printer can receive data.
-  timeoutSet(500000L);
+//  timeoutSet(500000L);
+  timeoutSet(500000000L);
 
   wake();
   reset();
@@ -671,10 +673,10 @@ int Thermal::println(char *str) {
         i++;
     }
 
-//    char c='\n';
-//  timeoutWait();
-//  write(ttyUsb, &c, 1);
-//  timeoutSet(BYTE_TIME);
+    char c='\n';
+  timeoutWait();
+  write(ttyUsb, &c, 1);
+  timeoutSet(BYTE_TIME);
 
 
 }
