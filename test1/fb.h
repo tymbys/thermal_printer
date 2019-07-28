@@ -18,17 +18,17 @@ public:
         return instance;
     }
 
-    static const uint32_t Width = 128;
-    static const uint32_t Height = 64;
+    static const uint32_t Width = 384;//128;
+    static const uint32_t Height = 100;//64;
     static const uint32_t CACHSIZE = Width * (int) (Height / 8 + 8);
 
     unsigned char FBCache[CACHSIZE]={0};
 
 
-    void OLED_DrawPoint_fast(unsigned char x, unsigned char y, unsigned char mode)
+    void OLED_DrawPoint_fast(uint32_t x, uint32_t y, unsigned char mode)
     {
-        int index;
-        unsigned char offset=0, data=0, dx=0;
+        uint32_t index;
+        uint32_t offset=0, data=0, dx=0;
 
         if ( x >= Width ) return;	//åñëè ïåðåäàëè â ôóíêöèþ ìóòü - âûõîäèì
         if ( y >= Height ) return;
@@ -60,7 +60,7 @@ public:
     }
 
 
-    void OLED_DrawLine_fast (int x1, int y1, int x2, int y2, unsigned char mode)  	//Draws a line between two points on the display - ïî Áðåçåíõåéìó
+    void OLED_DrawLine_fast (uint32_t x1, uint32_t y1, uint32_t x2, uint32_t y2, unsigned char mode)  	//Draws a line between two points on the display - ïî Áðåçåíõåéìó
     {
         signed int dy = 0;
         signed int dx = 0;

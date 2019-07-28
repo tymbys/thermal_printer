@@ -10,7 +10,7 @@ fb &_fb = fb::GetInstance();
 int main() {
     Thermal printer("/dev/ttyUSB0");
 
-    printer.begin(50);
+    printer.begin(100);
 /*
     // Test character double-height on & off
     printer.doubleHeightOn();
@@ -71,20 +71,32 @@ int main() {
 
 std::cout << "CACHSIZE: " << _fb.CACHSIZE << std::endl;
 
-    _fb.OLED_DrawLine_fast(0,0,50,50,1);
-    _fb.OLED_DrawLine_fast(50,0,0,50,1);
-    _fb.OLED_DrawLine_fast(0,0,0,50,1);
-    _fb.OLED_DrawLine_fast(0,0,50,0,1);
-    _fb.OLED_DrawLine_fast(0,50,50,50,1);
-    _fb.OLED_DrawLine_fast(50,0,50,50,1);
+//    _fb.OLED_DrawLine_fast(0,0,50,50,1);
+//    _fb.OLED_DrawLine_fast(50,0,0,50,1);
+//    _fb.OLED_DrawLine_fast(0,0,0,50,1);
+//    _fb.OLED_DrawLine_fast(0,0,50,0,1);
+//    _fb.OLED_DrawLine_fast(0,50,50,50,1);
+//    _fb.OLED_DrawLine_fast(50,0,50,50,1);
 
-//    for(int x=0; x<128/8; x++) {
+    uint32_t w=380, h=80;
+
+    _fb.OLED_DrawLine_fast(0,0,w,h,1);
+    _fb.OLED_DrawLine_fast(w,0,0,h,1);
+    _fb.OLED_DrawLine_fast(0,0,0,h,1);
+    _fb.OLED_DrawLine_fast(0,0,w,0,1);
+    _fb.OLED_DrawLine_fast(0,h,w,h,1);
+    _fb.OLED_DrawLine_fast(w,0,w,h,1);
+
+//    for(int x=0; x<384/8; x++) {
 //        _fb.FBCache[x] = 0xff;
 //    }
 
-    printer.printBitmap(128, 64, _fb.FBCache);
+//    _fb.OLED_DrawPoint_fast(380,0,1);
+
+    printer.printBitmap(_fb.Width, _fb.Height, _fb.FBCache);
 //    printer.println("Test!!!");
 //    printer.feed(2);
+
 
 
 
